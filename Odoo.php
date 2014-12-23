@@ -76,7 +76,7 @@ class Odoo
 	 *
 	 * @var string
 	 */
-	protected $path_prefix = '/';
+	protected $pathPrefix;
 
 	/**
 	 * Odoo constructor
@@ -86,15 +86,13 @@ class Odoo
 	 * @param string $user     The username
 	 * @param string $password Password of the user
 	 */
-	public function __construct($host, $database, $user, $password, $path_prefix = null)
+	public function __construct($host, $database, $user, $password, $pathPrefix = '/')
 	{
 		$this->host = $host;
 		$this->database = $database;
 		$this->user = $user;
 		$this->password = $password;
-		if ($path_prefix != null) {
-			$this->path_prefix = $path_prefix;
-		}
+		$this->pathPrefix = $pathPrefix;
 
 		$client = $this->getClient('common');
 
@@ -346,7 +344,7 @@ class Odoo
 
 		$this->path = $path;
 
-		$this->client = new XmlRpcClient($this->host . $this->path_prefix  . $path);
+		$this->client = new XmlRpcClient($this->host . $this->pathPrefix  . $path);
 		// The introspection done by the Zend XmlRpc client is probably specific
 		// to Zend XmlRpc servers. To prevent polution of the Odoo logs with errors
 		// resulting from this introspection calls we disable it.
